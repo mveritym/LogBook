@@ -1,14 +1,11 @@
 import express from 'express';
 import graphqlHTTP from 'express-graphql';
+import LogBookSchema from './src/schema';
 
 const app = express();
 
-app.use('/', (req, res) => {
-  res.send("LogBook running");
-});
-
 app.use('/graphql', graphqlHTTP({
-  // schema: MyGraphQLSchema,
+  schema: LogBookSchema,
   graphiql: true
 }));
 
