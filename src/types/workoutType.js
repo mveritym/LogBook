@@ -27,4 +27,4 @@ const WorkoutType = new GraphQLObjectType({
   })
 });
 
-export default WorkoutType;
+export { WorkoutType };

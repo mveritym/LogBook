@@ -10,6 +10,11 @@ const config = {
 firebase.initializeApp(config);
 const database = firebase.database();
 
+const exercisesRef = database.ref('exercises');
+
 export default {
+  createExercise: (exercise) => {
+    return exercisesRef.push(exercise).key;
+  },
   getWorkouts: () => database.ref('workouts').once('value', snapshot => snapshot.val())
 };

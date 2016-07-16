@@ -4,7 +4,7 @@ import {
 } from 'graphql';
 
 import db from './db';
-import { WorkoutType } from './types';
+import { WorkoutType } from './types/workoutType';
 
 const query = new GraphQLObjectType({
   name: 'RootQueryType',
