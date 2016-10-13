@@ -1,6 +1,7 @@
 import {
   GraphQLObjectType,
-  GraphQLList
+  GraphQLList,
+  GraphQLString
 } from 'graphql';
 
 import db from './db';
@@ -28,6 +29,15 @@ const query = new GraphQLObjectType({
             id
           }));
         });
+      }
+    },
+    exercise: {
+      type: ExerciseType,
+      args: {
+        id: { type: GraphQLString }
+      },
+      resolve(parent, { id }) {
+        return db.getExercise(id).then(snapshot => ({...snapshot.val(), id}));
       }
     }
   }
