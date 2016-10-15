@@ -16,5 +16,7 @@ export default {
   createExercise: (exercise) => {
     return exercisesRef.push(exercise).key;
   },
-  getWorkouts: () => database.ref('workouts').once('value', snapshot => snapshot.val())
+  getWorkouts: () => database.ref('workouts').once('value', snapshot => snapshot.val()),
+  getExercises: () => exercisesRef.once('value', snapshot => snapshot.val()),
+  getExercise: (id) => exercisesRef.child(id).once('value', snapshot => snapshot.val())
 };
