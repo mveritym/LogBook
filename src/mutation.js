@@ -1,6 +1,8 @@
 import {
+  GraphQLInt,
+  GraphQLList,
   GraphQLObjectType,
-  GraphQLInt
+  GraphQLString
 } from 'graphql';
 import { ExerciseType, ExerciseInputType } from './types/exerciseType';
 import { WorkoutType, WorkoutInputType } from './types/workoutType';
@@ -31,6 +33,15 @@ const mutation = new GraphQLObjectType({
         const id = db.createExercise(exercise);
         return {...exercise, id};
       }
+    },
+    addExercisesToWorkout: {
+      type: WorkoutType,
+      description: 'Add exercises to a workout',
+      args: {
+        id: { type: GraphQLString },
+        exercises: { type: new GraphQLList(GraphQLString) }
+      },
+      resolve: async (value, { id, exercises }) => await db.addExercisesToWorkout(id, exercises)
     }
   }),
 });
