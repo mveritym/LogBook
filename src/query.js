@@ -15,8 +15,21 @@ const query = new GraphQLObjectType({
       type: new GraphQLList(WorkoutType),
       resolve() {
         return db.getWorkouts().then(snapshot => {
-          return snapshot.val().slice(1);
+          const workouts = snapshot.val();
+          return Object.keys(workouts).map(id => ({
+            ...workouts[id],
+            id
+          }));
         });
+      }
+    },
+    workout: {
+      type: WorkoutType,
+      args: {
+        id: { type: GraphQLString }
+      },
+      resolve(parent, { id }) {
+        return db.getWorkout(id).then(snapshot => ({...snapshot.val(), id}));
       }
     },
     exercises: {

@@ -34,15 +34,13 @@ const sharedFields = {
   }
 };
 
-const ExerciseInputType = new GraphQLInputObjectType({
+export const ExerciseInputType = new GraphQLInputObjectType({
   name: 'ExerciseInput',
   description: 'An exercise',
-  fields: () => ({
-    ...sharedFields
-  })
+  fields: () => sharedFields
 });
 
-const ExerciseType = new GraphQLObjectType({
+export const ExerciseType = new GraphQLObjectType({
   name: 'Exercise',
   description: 'An exercise',
   fields: () => ({
@@ -53,5 +51,3 @@ const ExerciseType = new GraphQLObjectType({
     }
   })
 });
-
-export { ExerciseInputType, ExerciseType };

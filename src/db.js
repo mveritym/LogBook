@@ -10,13 +10,18 @@ const config = {
 firebase.initializeApp(config);
 const database = firebase.database();
 
+const workoutsRef = database.ref('workouts');
 const exercisesRef = database.ref('exercises');
 
 export default {
+  getWorkouts: () => workoutsRef.once('value', snapshot => snapshot.val()),
+  getWorkout: (id) => workoutsRef.child(id).once('value', snapshot => snapshot.val()),
+  createWorkout: (workout) => {
+    return workoutsRef.push(workout).key;
+  },
+  getExercises: () => exercisesRef.once('value', snapshot => snapshot.val()),
+  getExercise: (id) => exercisesRef.child(id).once('value', snapshot => snapshot.val()),
   createExercise: (exercise) => {
     return exercisesRef.push(exercise).key;
-  },
-  getWorkouts: () => database.ref('workouts').once('value', snapshot => snapshot.val()),
-  getExercises: () => exercisesRef.once('value', snapshot => snapshot.val()),
-  getExercise: (id) => exercisesRef.child(id).once('value', snapshot => snapshot.val())
+  }
 };

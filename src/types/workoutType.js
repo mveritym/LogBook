@@ -1,30 +1,40 @@
 import {
   GraphQLObjectType,
+  GraphQLInputObjectType,
   GraphQLList,
-  GraphQLString
+  GraphQLString,
+  GraphQLNonNull
 } from 'graphql';
 
-const WorkoutType = new GraphQLObjectType({
+const sharedFields = {
+  exercises: {
+    type: new GraphQLList(GraphQLString),
+    description: 'list of ids of the exercises in the workout'
+  },
+  letter: {
+    type: new GraphQLNonNull(GraphQLString),
+    description: 'letter of the workout (A, B or C)'
+  },
+  stage: {
+    type: new GraphQLNonNull(GraphQLString),
+    description: 'stage number of the workout (1, 2 or 3)'
+  }
+};
+
+export const WorkoutInputType = new GraphQLInputObjectType({
+  name: 'WorkoutInput',
+  description: 'A workout',
+  fields: () => sharedFields
+});
+
+export const WorkoutType = new GraphQLObjectType({
   name: 'Workout',
   description: 'A workout',
   fields: () => ({
+    ...sharedFields,
     id: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
       description: 'unique id of the workout'
-    },
-    exercises: {
-      type: new GraphQLList(GraphQLString),
-      description: 'list of ids of the exercises in the workout'
-    },
-    letter: {
-      type: GraphQLString,
-      description: 'letter of the workout (A, B or C)'
-    },
-    stage: {
-      type: GraphQLString,
-      description: 'stage number of the workout (1, 2 or 3)'
     }
   })
 });
-
-export { WorkoutType };
