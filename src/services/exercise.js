@@ -5,8 +5,8 @@ export const getExercise = async (id) => {
   return {...exercise, id};
 };
 
-export const getExercisesFromIDs = (ids) => {
-  return ids ? ids.map(id => getExercise(id)) : [];
+export const getExercisesFromIDs = async (ids) => {
+  return ids ? await Promise.all(ids.map(id => getExercise(id))) : [];
 };
 
 export const getAllExercises = async () => {
@@ -15,4 +15,9 @@ export const getAllExercises = async () => {
     ...exercises[id],
     id
   }));
+};
+
+export const createExercise = (exercise) => {
+  const id = db.createExercise(exercise);
+  return {...exercise, id};
 };

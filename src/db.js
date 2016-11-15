@@ -1,5 +1,4 @@
 import firebase from 'firebase';
-import union from 'lodash/union';
 
 const config = {
   apiKey: "AIzaSyB3E0ke8eVwu67tIiF7Iab2V_yW0vDXmZ0",
@@ -14,28 +13,21 @@ const database = firebase.database();
 const workoutsRef = database.ref('workouts');
 const exercisesRef = database.ref('exercises');
 
+const createWorkout = (workout) => workoutsRef.push(workout).key;
 const getWorkout = (id) => workoutsRef.child(id).once('value', snapshot => snapshot.val());
 const getWorkouts = () => workoutsRef.once('value', snapshot => snapshot.val());
+
+const createExercise = (exercise) => exercisesRef.push(exercise).key;
+const getExercises = () => exercisesRef.once('value', snapshot => snapshot.val());
+const getExercise = (id) => exercisesRef.child(id).once('value', snapshot => snapshot.val());
+const addExercisesToWorkout = (id, exercises) => workoutsRef.child(id).update({ exercises });
 
 export default {
   getWorkouts,
   getWorkout,
-  createWorkout: (workout) => {
-    return workoutsRef.push(workout).key;
-  },
-  getExercises: () => exercisesRef.once('value', snapshot => snapshot.val()),
-  getExercise: (id) => exercisesRef.child(id).once('value', snapshot => snapshot.val()),
-  createExercise: (exercise) => {
-    return exercisesRef.push(exercise).key;
-  },
-  addExercisesToWorkout: async (id, newExercises) => {
-    const workout = (await getWorkout(id)).val();
-    const exercises = union(workout.exercises, newExercises);
-    workoutsRef.child(id).update({ exercises });
-    return {
-      ...workout,
-      id,
-      exercises
-    };
-  }
+  createWorkout,
+  getExercises,
+  getExercise,
+  createExercise,
+  addExercisesToWorkout
 };

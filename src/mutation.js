@@ -6,7 +6,9 @@ import {
 } from 'graphql';
 import { ExerciseType, ExerciseInputType } from './types/exerciseType';
 import { WorkoutType, WorkoutInputType } from './types/workoutType';
-import db from './db';
+
+import { createWorkout, addExercisesToWorkout } from './services/workout';
+import { createExercise } from './services/exercise';
 
 const mutation = new GraphQLObjectType({
   name: 'StrongCurvesMutations',
@@ -18,10 +20,7 @@ const mutation = new GraphQLObjectType({
       args: {
         workout: { type: WorkoutInputType }
       },
-      resolve: (value, { workout }) => {
-        const id = db.createWorkout(workout);
-        return {...workout, id};
-      }
+      resolve: (value, { workout }) => createWorkout(workout)
     },
     createExercise: {
       type: ExerciseType,
@@ -29,10 +28,7 @@ const mutation = new GraphQLObjectType({
       args: {
         exercise: { type: ExerciseInputType }
       },
-      resolve: (value, { exercise }) => {
-        const id = db.createExercise(exercise);
-        return {...exercise, id};
-      }
+      resolve: (value, { exercise }) => createExercise(exercise)
     },
     addExercisesToWorkout: {
       type: WorkoutType,
@@ -41,7 +37,7 @@ const mutation = new GraphQLObjectType({
         id: { type: GraphQLString },
         exercises: { type: new GraphQLList(GraphQLString) }
       },
-      resolve: async (value, { id, exercises }) => await db.addExercisesToWorkout(id, exercises)
+      resolve: (value, { id, exercises }) => addExercisesToWorkout(id, exercises)
     }
   }),
 });
