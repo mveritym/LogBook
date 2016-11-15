@@ -5,12 +5,9 @@ import {
   GraphQLString,
   GraphQLNonNull
 } from 'graphql';
+import { ExerciseType } from './exerciseType';
 
 const sharedFields = {
-  exercises: {
-    type: new GraphQLList(GraphQLString),
-    description: 'list of ids of the exercises in the workout'
-  },
   letter: {
     type: new GraphQLNonNull(GraphQLString),
     description: 'letter of the workout (A, B or C)'
@@ -32,6 +29,10 @@ export const WorkoutType = new GraphQLObjectType({
   description: 'A workout',
   fields: () => ({
     ...sharedFields,
+    exercises: {
+      type: new GraphQLList(ExerciseType),
+      description: 'the exercises in the workout'
+    },
     id: {
       type: new GraphQLNonNull(GraphQLString),
       description: 'unique id of the workout'

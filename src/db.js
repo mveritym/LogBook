@@ -15,9 +15,10 @@ const workoutsRef = database.ref('workouts');
 const exercisesRef = database.ref('exercises');
 
 const getWorkout = (id) => workoutsRef.child(id).once('value', snapshot => snapshot.val());
+const getWorkouts = () => workoutsRef.once('value', snapshot => snapshot.val());
 
 export default {
-  getWorkouts: () => workoutsRef.once('value', snapshot => snapshot.val()),
+  getWorkouts,
   getWorkout,
   createWorkout: (workout) => {
     return workoutsRef.push(workout).key;

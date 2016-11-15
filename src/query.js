@@ -7,6 +7,8 @@ import {
 import db from './db';
 import { WorkoutType } from './types/workoutType';
 import { ExerciseType } from './types/exerciseType';
+import { getExercise, getAllExercises } from './services/exercise';
+import { getWorkout, getAllWorkouts } from './services/workout';
 
 const query = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -14,13 +16,7 @@ const query = new GraphQLObjectType({
     workouts: {
       type: new GraphQLList(WorkoutType),
       resolve() {
-        return db.getWorkouts().then(snapshot => {
-          const workouts = snapshot.val();
-          return Object.keys(workouts).map(id => ({
-            ...workouts[id],
-            id
-          }));
-        });
+        return getAllWorkouts();
       }
     },
     workout: {
@@ -29,19 +25,13 @@ const query = new GraphQLObjectType({
         id: { type: GraphQLString }
       },
       resolve(parent, { id }) {
-        return db.getWorkout(id).then(snapshot => ({...snapshot.val(), id}));
+        return getWorkout(id);
       }
     },
     exercises: {
       type: new GraphQLList(ExerciseType),
       resolve() {
-        return db.getExercises().then(snapshot => {
-          const exercises = snapshot.val();
-          return Object.keys(exercises).map(id => ({
-            ...exercises[id],
-            id
-          }));
-        });
+        return getAllExercises();
       }
     },
     exercise: {
@@ -50,7 +40,7 @@ const query = new GraphQLObjectType({
         id: { type: GraphQLString }
       },
       resolve(parent, { id }) {
-        return db.getExercise(id).then(snapshot => ({...snapshot.val(), id}));
+        return getExercise(id);
       }
     }
   }
